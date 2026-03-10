@@ -79,7 +79,7 @@ sealed class Result<T> {
 
 class Success<T> extends Result<T> {
   final T value;
-  const Success(this.value);
+   Success(this.value);
 
   @override
   R when<R>({
@@ -91,7 +91,7 @@ class Success<T> extends Result<T> {
 
 class Failure<T> extends Result<T> {
   final AppError error;
-  const Failure(this.error);
+   Failure(this.error);
 
   @override
   R when<R>({
