@@ -78,14 +78,14 @@ class AddFeatureCommand extends Command<void> {
     final rawInput = argResults!.rest.first.toLowerCase().replaceAll('\\', '/');
     final segments = rawInput.split('/').where((s) => s.isNotEmpty).toList();
     final featureName = segments.last;
-    final baseOption  = argResults!['path'] as String;
-    final basePath    = segments.length > 1
+    final baseOption = argResults!['path'] as String;
+    final basePath = segments.length > 1
         ? '$baseOption/${segments.sublist(0, segments.length - 1).join('/')}'
         : baseOption;
 
     StateManagement sm = StateManagement.provider;
-    if (argResults!['bloc']     == true) sm = StateManagement.bloc;
-    if (argResults!['cubit']    == true) sm = StateManagement.cubit;
+    if (argResults!['bloc'] == true) sm = StateManagement.bloc;
+    if (argResults!['cubit'] == true) sm = StateManagement.cubit;
     if (argResults!['riverpod'] == true) sm = StateManagement.riverpod;
 
     await FeatureGenerator(
@@ -114,10 +114,11 @@ class AddPageCommand extends Command<void> {
       exit(1);
     }
 
-    final feature  = argResults!.rest[0].toLowerCase();
+    final feature = argResults!.rest[0].toLowerCase();
     final pageName = argResults!.rest[1].toLowerCase();
-    final cls      = _pascal(pageName);
-    final path     = 'lib/features/$feature/presentation/view/${pageName}_view.dart';
+    final cls = _pascal(pageName);
+    final path =
+        'lib/features/$feature/presentation/view/${pageName}_view.dart';
 
     _safeWrite(path, '''import 'package:flutter/material.dart';
 
@@ -153,15 +154,17 @@ class AddUsecaseCommand extends Command<void> {
   @override
   Future<void> run() async {
     if (argResults!.rest.length < 2) {
-      print('\x1B[31m✗ Usage: fddp add usecase <feature> <usecase_name>\x1B[0m');
+      print(
+          '\x1B[31m✗ Usage: fddp add usecase <feature> <usecase_name>\x1B[0m');
       exit(1);
     }
 
-    final feature     = argResults!.rest[0].toLowerCase();
+    final feature = argResults!.rest[0].toLowerCase();
     final usecaseName = argResults!.rest[1].toLowerCase();
-    final cls         = _pascal(usecaseName);
-    final repoCls     = _pascal(feature);
-    final path        = 'lib/features/$feature/domain/usecases/${usecaseName}_usecase.dart';
+    final cls = _pascal(usecaseName);
+    final repoCls = _pascal(feature);
+    final path =
+        'lib/features/$feature/domain/usecases/${usecaseName}_usecase.dart';
 
     // Try to read package name for correct import
     String pkg = 'your_app';
@@ -169,7 +172,8 @@ class AddUsecaseCommand extends Command<void> {
     if (pubspec.existsSync()) {
       try {
         final content = pubspec.readAsStringSync();
-        final match = RegExp(r'^name:\s*(\S+)', multiLine: true).firstMatch(content);
+        final match =
+            RegExp(r'^name:\s*(\S+)', multiLine: true).firstMatch(content);
         if (match != null) pkg = match.group(1)!;
       } catch (_) {}
     }

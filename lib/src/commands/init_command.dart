@@ -16,14 +16,14 @@ class InitCommand extends Command<void> {
     print('');
 
     final structure = {
-      'lib/core/result/result.dart':            _resultTemplate(),
+      'lib/core/result/result.dart': _resultTemplate(),
       'lib/core/exceptions/app_exception.dart': _appExceptionTemplate(),
-      'lib/core/usecases/usecase.dart':         _usecaseTemplate(),
-      'lib/core/network/network_info.dart':     _networkInfoTemplate(),
-      'lib/core/theme/app_theme.dart':          _themeTemplate(),
-      'lib/core/constants/app_constants.dart':  _constantsTemplate(),
-      'lib/core/widgets/loading_widget.dart':   _loadingWidgetTemplate(),
-      'lib/config/routes/app_router.dart':      _routerTemplate(),
+      'lib/core/usecases/usecase.dart': _usecaseTemplate(),
+      'lib/core/network/network_info.dart': _networkInfoTemplate(),
+      'lib/core/theme/app_theme.dart': _themeTemplate(),
+      'lib/core/constants/app_constants.dart': _constantsTemplate(),
+      'lib/core/widgets/loading_widget.dart': _loadingWidgetTemplate(),
+      'lib/config/routes/app_router.dart': _routerTemplate(),
       'lib/config/di/injection_container.dart': _diTemplate(),
     };
 
@@ -79,7 +79,7 @@ sealed class Result<T> {
 
 class Success<T> extends Result<T> {
   final T value;
-  Success(this.value);
+  const Success(this.value);
 
   @override
   R when<R>({
@@ -91,7 +91,7 @@ class Success<T> extends Result<T> {
 
 class Failure<T> extends Result<T> {
   final AppError error;
-  Failure(this.error);
+  const Failure(this.error);
 
   @override
   R when<R>({

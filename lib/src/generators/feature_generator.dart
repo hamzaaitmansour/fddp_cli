@@ -32,15 +32,16 @@ class FeatureGenerator {
     _pkg = _readPackageName();
   }
 
-  String get _cls         => _pascal(featureName);
+  String get _cls => _pascal(featureName);
   String get _featurePath => '$basePath/$featureName';
-  String get _fp          => 'package:$_pkg/${_featurePath.replaceFirst('lib/', '')}';
-  String get _cp          => 'package:$_pkg/core';
+  String get _fp => 'package:$_pkg/${_featurePath.replaceFirst('lib/', '')}';
+  String get _cp => 'package:$_pkg/core';
 
   // ── Generate ──────────────────────────────────────────────────────────────
 
   Future<void> generate() async {
-    final smLabel = stateManagement.name; // "provider" | "bloc" | "cubit" | "riverpod"
+    final smLabel =
+        stateManagement.name; // "provider" | "bloc" | "cubit" | "riverpod"
     print('');
     print('\x1B[36m🚀 Generating feature:\x1B[0m \x1B[1m$_featurePath\x1B[0m');
     print('\x1B[90m   package: $_pkg  |  state: $smLabel\x1B[0m');
@@ -86,20 +87,24 @@ class FeatureGenerator {
 
     switch (stateManagement) {
       case StateManagement.provider:
-        return [...base,
+        return [
+          ...base,
           '$_featurePath/presentation/view_state',
           '$_featurePath/presentation/view_model',
         ];
       case StateManagement.bloc:
-        return [...base,
+        return [
+          ...base,
           '$_featurePath/presentation/bloc',
         ];
       case StateManagement.cubit:
-        return [...base,
+        return [
+          ...base,
           '$_featurePath/presentation/cubit',
         ];
       case StateManagement.riverpod:
-        return [...base,
+        return [
+          ...base,
           '$_featurePath/presentation/providers',
           '$_featurePath/presentation/state',
         ];
@@ -110,8 +115,7 @@ class FeatureGenerator {
 
   Map<String, String> _files() => {
         // ── Data ──────────────────────────────────────────────────────────
-        '$_featurePath/data/models/${featureName}_model.dart':
-            _modelFile(),
+        '$_featurePath/data/models/${featureName}_model.dart': _modelFile(),
         '$_featurePath/data/datasources/${featureName}_remote_datasource.dart':
             _remoteDataSourceFile(),
         '$_featurePath/data/datasources/${featureName}_local_datasource.dart':
@@ -186,7 +190,8 @@ class FeatureGenerator {
 }
 ''';
 
-  String _modelFile() => '''import '$_fp/domain/entities/${featureName}_entity.dart';
+  String _modelFile() =>
+      '''import '$_fp/domain/entities/${featureName}_entity.dart';
 
 class ${_cls}Model extends ${_cls}Entity {
   const ${_cls}Model({required super.id});
@@ -201,7 +206,8 @@ class ${_cls}Model extends ${_cls}Entity {
 }
 ''';
 
-  String _remoteDataSourceFile() => '''import '$_fp/data/models/${featureName}_model.dart';
+  String _remoteDataSourceFile() =>
+      '''import '$_fp/data/models/${featureName}_model.dart';
 
 abstract class ${_cls}RemoteDataSource {
   Future<List<${_cls}Model>> getAll();
@@ -222,7 +228,8 @@ class ${_cls}RemoteDataSourceImpl implements ${_cls}RemoteDataSource {
 }
 ''';
 
-  String _localDataSourceFile() => '''import '$_fp/data/models/${featureName}_model.dart';
+  String _localDataSourceFile() =>
+      '''import '$_fp/data/models/${featureName}_model.dart';
 
 abstract class ${_cls}LocalDataSource {
   Future<List<${_cls}Model>> getCached();
@@ -338,7 +345,8 @@ class ${_cls}Error extends ${_cls}ViewState {
 }
 ''';
 
-  String _providerViewModelFile() => '''import 'package:flutter/foundation.dart';
+  String _providerViewModelFile() =>
+      '''import 'package:flutter/foundation.dart';
 import '$_fp/presentation/view_state/${featureName}_view_state.dart';
 import '$_fp/domain/usecases/get_${featureName}_usecase.dart';
 
@@ -626,7 +634,8 @@ class ${_cls}View extends StatelessWidget {
   // RIVERPOD
   // ═══════════════════════════════════════════════════════════════════════════
 
-  String _riverpodStateFile() => '''import '$_fp/domain/entities/${featureName}_entity.dart';
+  String _riverpodStateFile() =>
+      '''import '$_fp/domain/entities/${featureName}_entity.dart';
 
 class ${_cls}State {
   final bool isLoading;
@@ -655,7 +664,8 @@ class ${_cls}State {
 }
 ''';
 
-  String _riverpodProviderFile() => '''import 'package:flutter_riverpod/flutter_riverpod.dart';
+  String _riverpodProviderFile() =>
+      '''import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '$_fp/presentation/state/${featureName}_state.dart';
 import '$_fp/domain/usecases/get_${featureName}_usecase.dart';
 
@@ -745,8 +755,8 @@ class _${_cls}ViewState extends ConsumerState<${_cls}View> {
   void _printTree() {
     final smDir = switch (stateManagement) {
       StateManagement.provider => 'view_model/ + view_state/',
-      StateManagement.bloc     => 'bloc/',
-      StateManagement.cubit    => 'cubit/',
+      StateManagement.bloc => 'bloc/',
+      StateManagement.cubit => 'cubit/',
       StateManagement.riverpod => 'providers/ + state/',
     };
 

@@ -3,9 +3,9 @@ description: >-
   Flutter CLI to auto-generate clean architecture feature folders with Provider,
   Bloc, Cubit, or Riverpod. One command builds your full data/domain/presentation structure.
 version: 1.0.0
-homepage: https://github.com/yourusername/fddp
-repository: https://github.com/yourusername/fddp
-issue_tracker: https://github.com/yourusername/fddp/issues
+homepage: https://github.com/hamzaaitmansour/fddp
+repository: https://github.com/hamzaaitmansour/fddp
+issue_tracker: https://github.com/hamzaaitmansour/fddp/issues
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
