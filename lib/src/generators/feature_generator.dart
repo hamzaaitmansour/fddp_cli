@@ -507,9 +507,22 @@ import '$_fp/presentation/bloc/${featureName}_bloc.dart';
 import '$_fp/presentation/bloc/${featureName}_event.dart';
 import '$_fp/presentation/bloc/${featureName}_state.dart';
 
-class ${_cls}View extends StatelessWidget {
+class ${_cls}View extends StatefulWidget {
   const ${_cls}View({super.key});
   static const routeName = '/$featureName';
+
+  @override
+  State<${_cls}View> createState() => _${_cls}ViewState();
+}
+
+class _${_cls}ViewState extends State<${_cls}View> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => context.read<${_cls}Bloc>().add(const Get${_cls}sEvent()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

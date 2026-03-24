@@ -1,0 +1,16 @@
+# Ignore local workspace artifacts
+mnt/
+.dart_tool/
+
+# Editor/system noise
+.vscode/
+.idea/
+*.iml
+
+# Build and generated outputs
+build/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db

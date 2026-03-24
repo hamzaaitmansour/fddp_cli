@@ -83,7 +83,22 @@ class AddFeatureCommand extends Command<void> {
         ? '$baseOption/${segments.sublist(0, segments.length - 1).join('/')}'
         : baseOption;
 
+    final selectedFlags = [
+      argResults!['provider'] == true,
+      argResults!['bloc'] == true,
+      argResults!['cubit'] == true,
+      argResults!['riverpod'] == true,
+    ].where((selected) => selected).length;
+
+    if (selectedFlags > 1) {
+      print(
+        '\x1B[31m✗ Please choose only one state management flag: --provider, --bloc, --cubit, or --riverpod\x1B[0m',
+      );
+      exit(1);
+    }
+
     StateManagement sm = StateManagement.provider;
+    if (argResults!['provider'] == true) sm = StateManagement.provider;
     if (argResults!['bloc'] == true) sm = StateManagement.bloc;
     if (argResults!['cubit'] == true) sm = StateManagement.cubit;
     if (argResults!['riverpod'] == true) sm = StateManagement.riverpod;
@@ -120,7 +135,7 @@ class AddPageCommand extends Command<void> {
     final path =
         'lib/features/$feature/presentation/view/${pageName}_view.dart';
 
-    _safeWrite(path, '''import 'package:flutter/material.dart';
+    final created = _safeWrite(path, '''import 'package:flutter/material.dart';
 
 class ${cls}View extends StatelessWidget {
   const ${cls}View({super.key});
@@ -136,7 +151,11 @@ class ${cls}View extends StatelessWidget {
   }
 }
 ''');
-    print('\x1B[32m✓ Created\x1B[0m $path');
+    if (created) {
+      print('\x1B[32m✓ Created\x1B[0m $path');
+    } else {
+      print('\x1B[33m⚠ skip\x1B[0m  $path (already exists)');
+    }
   }
 }
 
@@ -178,19 +197,25 @@ class AddUsecaseCommand extends Command<void> {
       } catch (_) {}
     }
 
-    _safeWrite(path, '''import 'package:$pkg/core/result/result.dart';
+    final created =
+        _safeWrite(path, '''import 'package:$pkg/core/result/result.dart';
 import 'package:$pkg/features/$feature/domain/repositories/${feature}_repository.dart';
 
 class $cls {
   final ${repoCls}Repository _repository;
   $cls(this._repository);
 
-  Future<Result<void>> call(/* Add params here */) async {
-    return await _repository./* method */();
+  Future<Result<void>> call() async {
+    // TODO: replace with your repository method, e.g. return _repository.logout();
+    throw UnimplementedError('Implement $cls.call and map it to ${repoCls}Repository.');
   }
 }
 ''');
-    print('\x1B[32m✓ Created\x1B[0m $path');
+    if (created) {
+      print('\x1B[32m✓ Created\x1B[0m $path');
+    } else {
+      print('\x1B[33m⚠ skip\x1B[0m  $path (already exists)');
+    }
   }
 }
 
@@ -199,10 +224,14 @@ class $cls {
 String _pascal(String s) =>
     s.split('_').map((w) => w[0].toUpperCase() + w.substring(1)).join('');
 
-void _safeWrite(String path, String content) {
+bool _safeWrite(String path, String content) {
   final file = File(path);
+  if (file.existsSync()) {
+    return false;
+  }
   file.parent.createSync(recursive: true);
   file.writeAsStringSync(content);
+  return true;
 }
 
 enum StateManagement { provider, bloc, cubit, riverpod }
